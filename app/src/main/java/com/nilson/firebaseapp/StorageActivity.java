@@ -17,8 +17,11 @@ import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.Toast;
 
+import com.google.firebase.database.DatabaseReference;
+import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.storage.FirebaseStorage;
 import com.google.firebase.storage.StorageReference;
+import com.nilson.firebaseapp.model.Upload;
 
 import java.io.ByteArrayOutputStream;
 import java.util.Date;
@@ -30,6 +33,11 @@ public class StorageActivity extends AppCompatActivity {
     private Button btnUpload, btnGaleria;
     private Uri imagemUri = null;
     private EditText storage_edit_nome;
+
+    //referencia para um no Realtimedatabase
+    private DatabaseReference database = FirebaseDatabase.getInstance().getReference("uploads");
+
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -71,11 +79,37 @@ public class StorageActivity extends AppCompatActivity {
         String tipo = getFileExtension(imagemUri);
         //referencia do arquivo no Firebase
         Date d = new Date();
-        String nome = storage_edit_nome.getText().toString()+"-"+d.getTime();
-        StorageReference imageRef = armazenar.getReference().child("imagem/"+nome+"."+tipo);
+        String nome = storage_edit_nome.getText().toString();
+
+        //criando referencia da imagem no Storage
+        StorageReference imageRef = armazenar.getReference().child("imagem/"+nome+"-"+ d.getTime()+"."+tipo);
 
         imageRef.putFile(imagemUri).addOnSuccessListener(taskSnapshot -> {
             Toast.makeText(this,"Upload Foi suave",Toast.LENGTH_SHORT).show();
+
+
+
+            /*inserir dados da imagem no Realtimedatabase*/
+
+
+
+
+
+            //pegar url da imagem
+            taskSnapshot.getStorage().getDownloadUrl()
+                    .addOnSuccessListener(uri -> {
+                       //inserir no database
+
+                        DatabaseReference refUpload = database.push();
+                        String id = refUpload.getKey();
+                        Upload upload = new Upload(id,nome,uri.toString());
+                        //salvando upload no database
+                        refUpload.setValue(upload);
+
+                    }).addOnFailureListener( e -> {
+
+            });
+
 
         }).addOnFailureListener(e -> {
             e.printStackTrace();
@@ -88,12 +122,12 @@ public class StorageActivity extends AppCompatActivity {
         ContentResolver cr = getContentResolver();
         return MimeTypeMap.getSingleton().getExtensionFromMimeType(cr.getType(imagemUri));
     }
-
+    //resultado da startActivityResult
     @Override
     protected void onActivityResult(int requestCode, int resultCode, @Nullable Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
         Log.i("Result", "requestCode: "+ requestCode + ", resultCode "+ resultCode );
-        if(requestCode==112 && resultCode == Activity.RESULT_OK){
+        if(requestCode==117 && resultCode == Activity.RESULT_OK){
             //CASO O USUARIO SELECIONOU UMA IMAGEM DA GALERIA
 
             //endereco da imagem selecionada
