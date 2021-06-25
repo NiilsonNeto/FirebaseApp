@@ -1,6 +1,8 @@
 package com.nilson.firebaseapp.model;
 
-public class Upload {
+import java.io.Serializable;
+
+public class Upload implements Serializable {
     private String id;
     private String nomeImagem;
     private String url;

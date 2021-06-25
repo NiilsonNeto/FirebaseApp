@@ -73,7 +73,7 @@ public class ImagemAdapter extends RecyclerView.Adapter<ImagemAdapter.ImagemVH> 
             menu.setHeaderTitle("Selecionar ação");
 
             MenuItem deletar = menu.add(0,1,1,"Deletar");
-            menu.add(0,1,1,"Atualizar");
+            MenuItem atualizar =  menu.add(0,1,1,"Atualizar");
 
             //evento de click opcao deletar
             deletar.setOnMenuItemClickListener(item -> {
@@ -82,6 +82,13 @@ public class ImagemAdapter extends RecyclerView.Adapter<ImagemAdapter.ImagemVH> 
                     listener.onDeleteClick(position);
                 }
                 return true;
+            });
+            atualizar.setOnMenuItemClickListener(item -> {
+               if(listener!=null){
+                   int position = getAdapterPosition();
+                   listener.onUpdateClick(position);
+               }
+               return true;
             });
         }
     }
