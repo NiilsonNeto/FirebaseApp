@@ -65,6 +65,7 @@ public class UploadsFragment extends Fragment {
 
         Glide.with(this).load(upload.getUrl()).into(imageView);
 
+        
         btnGaleria.setOnClickListener( v -> {
             Intent intent = new Intent();
             //intent implicita -> pegar um arquivo do celular
