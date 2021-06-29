@@ -33,7 +33,7 @@ public class LoginActivity extends AppCompatActivity {
 
         if(auth.getCurrentUser()!=null){
             String email = auth.getCurrentUser().getEmail();
-            Intent intent = new Intent(getApplicationContext(),MainActivity.class);
+            Intent intent = new Intent(getApplicationContext(),NavigationActivity.class);
             intent.putExtra("email",email);
             startActivity(intent);
         }
