@@ -11,6 +11,9 @@ import com.google.android.gms.tasks.Task;
 import com.google.firebase.auth.AuthResult;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.UserProfileChangeRequest;
+import com.google.firebase.database.DatabaseReference;
+import com.google.firebase.database.FirebaseDatabase;
+import com.nilson.firebaseapp.model.User;
 
 public class CadastroActivity extends AppCompatActivity {
         private Button btnCadastrar;
@@ -18,6 +21,9 @@ public class CadastroActivity extends AppCompatActivity {
 
         // Autentificacao
         private FirebaseAuth auth = FirebaseAuth.getInstance();
+
+        //referencia para gravar os nome no database
+        private DatabaseReference databaseReference = FirebaseDatabase.getInstance().getReference("usuarios");
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -57,6 +63,12 @@ public class CadastroActivity extends AppCompatActivity {
             t.addOnSuccessListener(authResult -> {
                 //request para mudar nome do usuario
                 UserProfileChangeRequest update = new UserProfileChangeRequest.Builder().setDisplayName(nome).build();
+
+
+                //inserir na database
+                User u = new User(authResult.getUser().getUid(),email,nome);
+                databaseReference.child(u.getId()).setValue(u);
+
 
                 //set nome do usuario
                 authResult.getUser().updateProfile(update);

@@ -10,6 +10,7 @@ import android.view.ViewGroup;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.google.firebase.auth.FirebaseAuth;
 import com.nilson.firebaseapp.R;
 
 /**
@@ -17,6 +18,7 @@ import com.nilson.firebaseapp.R;
  */
 public class MainFragment extends Fragment {
 
+    private FirebaseAuth auth = FirebaseAuth.getInstance();
     public MainFragment() {
         // Required empty public constructor
     }
@@ -34,5 +36,6 @@ public class MainFragment extends Fragment {
         });
 
         return layout;
+
     }
 }

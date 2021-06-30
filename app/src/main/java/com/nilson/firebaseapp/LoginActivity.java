@@ -60,7 +60,7 @@ public class LoginActivity extends AppCompatActivity {
         t.addOnSuccessListener(authResult ->{
             Toast.makeText(this,"Entro",Toast.LENGTH_SHORT).show();
 
-            Intent intent = new Intent(getApplicationContext(),MainActivity.class);
+            Intent intent = new Intent(getApplicationContext(),NavigationActivity.class);
             startActivity(intent);
         });
         //e para exception
