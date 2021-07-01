@@ -6,6 +6,16 @@ public class User {
     private String id,email,nome,photoUrl;
 
 
+    //armazenar se o usuario recebeu solicitacao
+    private boolean ReaceiveRequest;
+
+    public void setReaceiveRequest(boolean b) {
+        this.ReaceiveRequest = b;
+    }
+    public boolean getReaceiveRequest() {
+        return ReaceiveRequest;
+    }
+
     public User(){}
     public User(String id, String email, String nome){
         this.id = id;
@@ -43,5 +53,8 @@ public class User {
 
     public void setPhotoUrl(String photoUrl) {
         this.photoUrl = photoUrl;
+    }
+    public boolean equals(User u ){
+        return this.id.equals(u.getId());
     }
 }
