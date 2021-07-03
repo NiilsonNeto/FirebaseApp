@@ -5,7 +5,9 @@ import android.app.NotificationManager;
 import android.app.Service;
 import android.content.Context;
 import android.content.Intent;
+import android.content.res.Configuration;
 import android.os.IBinder;
+import android.util.Log;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
@@ -25,25 +27,12 @@ import com.nilson.firebaseapp.model.User;
 import static com.nilson.firebaseapp.util.App.CHANNEL_1;
 
 public class NotificationService extends Service {
+    private ValueEventListener listener;
+    private DatabaseReference receiveRef;
 
     @Override
     public void onCreate() {
         super.onCreate();
-        DatabaseReference receiveRef = FirebaseDatabase.getInstance().getReference("usuarios").child(FirebaseAuth.getInstance().getCurrentUser().getUid());
-        receiveRef.addValueEventListener(new ValueEventListener() {
-            @Override
-            public void onDataChange(@NonNull DataSnapshot snapshot) {
-                User user = snapshot.getValue(User.class);
-                showNotify(user);
-
-            }
-
-            @Override
-            public void onCancelled(@NonNull DatabaseError error) {
-
-            }
-        });
-
     }
     public void showNotify(User user){
         //criar notificação
@@ -65,7 +54,35 @@ public class NotificationService extends Service {
     @Override
     public int onStartCommand(Intent intent, int flags, int startId) {
         //executado quando o serviço é chamado
+        receiveRef = FirebaseDatabase.getInstance().getReference("usuarios").child(FirebaseAuth.getInstance().getCurrentUser().getUid());
+        listener = receiveRef.addValueEventListener(new ValueEventListener() {
+            @Override
+            public void onDataChange(@NonNull DataSnapshot snapshot) {
+                User user = snapshot.getValue(User.class);
+                showNotify(user);
+
+                onRebind( new Intent());
+
+            }
+
+            @Override
+            public void onCancelled(@NonNull DatabaseError error) {
+
+            }
+        });
         return super.onStartCommand(intent, flags, startId);
+    }
+
+    @Override
+    public void onRebind(Intent intent) {
+        super.onRebind(intent);
+        receiveRef.removeEventListener(listener);
+        onStartCommand(null,0,1);
+    }
+
+    @Override
+    public void onDestroy() {
+        super.onDestroy();
     }
 
     @Nullable

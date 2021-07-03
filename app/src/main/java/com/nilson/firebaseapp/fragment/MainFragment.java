@@ -52,7 +52,8 @@ public class MainFragment extends Fragment {
         View layout =  inflater.inflate(R.layout.fragment_main, container, false);
         userLogged = new User(auth.getCurrentUser().getUid(),
                 auth.getCurrentUser().getEmail(),
-                auth.getCurrentUser().getDisplayName());
+                auth.getCurrentUser().getDisplayName()
+        );
 
         recyclerContatos = layout.findViewById(R.id.frag_main_recycler_user);
 
