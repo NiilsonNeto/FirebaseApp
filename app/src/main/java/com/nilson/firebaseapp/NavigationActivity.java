@@ -7,6 +7,7 @@ import androidx.navigation.NavController;
 import androidx.navigation.Navigation;
 import androidx.navigation.ui.NavigationUI;
 
+import android.content.Intent;
 import android.os.Bundle;
 import android.view.View;
 import android.widget.ImageView;
@@ -14,6 +15,7 @@ import android.widget.TextView;
 
 import com.google.android.material.navigation.NavigationView;
 import com.google.firebase.auth.FirebaseAuth;
+import com.nilson.firebaseapp.util.NotificationService;
 
 public class NavigationActivity extends AppCompatActivity {
     private FirebaseAuth auth = FirebaseAuth.getInstance();
@@ -49,8 +51,13 @@ public class NavigationActivity extends AppCompatActivity {
         NavController navController = Navigation.findNavController(this,R.id.nav_host_fragment);
 
         //Justar navController com navView(menu)
-
         NavigationUI.setupWithNavController(navigationView,navController);
+
+        //criar serviço
+        Intent service = new Intent(getApplicationContext(), NotificationService.class);
+
+
+        getApplicationContext().startService(service);
 
         //Evento logout
 

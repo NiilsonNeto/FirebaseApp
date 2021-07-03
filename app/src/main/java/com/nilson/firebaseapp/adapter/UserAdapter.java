@@ -55,6 +55,7 @@ public class UserAdapter extends RecyclerView.Adapter<UserAdapter.UserVH> {
         User u = listaContatos.get(position);
         holder.textEmail.setText(u.getEmail());
         holder.textNome.setText(u.getNome());
+
         if(u.getReaceiveRequest()) {
             holder.onClick();
         }

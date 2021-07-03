@@ -12,6 +12,10 @@
         android:title="Cadastro de Imagens">
 
     </item>
+    <item android:id="@+id/nav__menu_notification"
+        android:title="Notificações">
+
+    </item>
 
     <group
         android:id="@+id/nav_group_2"
